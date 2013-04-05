@@ -1,4 +1,5 @@
 cnsn_local
 ==========
 
-Standard antelope local file repository for cnsn local configurations.
+CNSN antelope file repository based on build_sourcetree structure.
+
