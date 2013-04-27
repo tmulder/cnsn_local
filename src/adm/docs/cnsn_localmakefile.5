@@ -1,0 +1,32 @@
+.TH CNSN_LOCALMAKEFILE 5 "$Date$"
+.SH NAME
+cnsn_localmakefile \- CNSN_LOCAL Makefile format
+.SH DESCRIPTION
+The cnsn_local makefile is an extension of the Antelope Makefiles documented 
+in antelopemakefile(5). They behave exactly the same way as Antelope makefiles,
+with the exception that they use the CNSN_LOCALMAKE environment variable 
+instead of ANTELOPEMAKE to point to their make rules, and they install to 
+/opt/cnsn_local/X.X instead of /opt/antelope/X.X. 
+.SH ENVIRONMENT
+.IP CNSN_LOCAL
+This is the CNSN_LOCAL environment variable, exactly analogous to the ANTELOPE 
+environment variable as documented in antelopeenv(5). It indicates the 
+base directory for an CNSN_LOCAL release. It uses the same version number as the 
+Antelope installation since the CNSN_LOCAL code is compiled against and therefore
+dependent on specific Antelope versions. This environment variable 
+is usually set automatically, for example by sourcing the file
+/opt/cnsn_local/4.8/setup.csh or /opt/cnsn_local/4.8/setup.sh.
+.IP CNSN_LOCALMAKE
+This is the CNSN_LOCALMAKE environment variable, exactly analogous to the ANTELOPEMAKE
+environment variable as documented in antelopeenv(5) and antelopemakefile(5).
+.SH "SEE ALSO"
+.nf
+antelopemakefile(5)
+.fi
+.SH AUTHOR
+.nf
+Kent Lindquist
+Lindquist Consulting, Inc.
+Taimi Mulder
+Geological Survey of Canada
+.fi

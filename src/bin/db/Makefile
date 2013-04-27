@@ -1,0 +1,1 @@
+include $(CNSN_LOCALMAKE)

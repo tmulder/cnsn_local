@@ -1,0 +1,83 @@
+unsetenv CNSN_LOCAL
+
+source /opt/antelope/$id/setup.csh
+
+setenv CNSN_LOCAL /opt/cnsn_local/$id 
+
+set a="$CNSN_LOCAL/bin"
+
+foreach i ( $path ) 
+    if ( "$i" !~ /opt/cnsn_local/* ) then
+        set a=($a $i)
+    endif
+end
+set path=($a)
+
+if ( $?MANPATH ) then
+    set a=$CNSN_LOCAL/man
+    foreach i ( `echo $MANPATH | sed 's/:/ /g'` )
+        if ( "$i" !~ /opt/cnsn_local/* ) then
+            set a=($a $i)
+        endif
+    end
+    setenv MANPATH `echo $a | sed 's/ /:/g' ` 
+else
+    setenv MANPATH $CNSN_LOCAL/man:$ANTELOPE/man:$ANTELOPE/local/man:$ANTELOPE:h/../$tcltk/man:$ANTELOPE:h/../$perl/man
+endif
+
+if ( $?PFPATH ) then
+    if ( $PFPATH !~ *$CNSN_LOCAL* ) then
+	set p=""
+	set m="$ANTELOPE/data/pf"
+	foreach i ( `echo $PFPATH | sed 's/:/ /g'` )
+	    if ( "$i" !~ "$m" ) then
+		set p=($p $i)
+	    else 
+		set p=($p $m "$CNSN_LOCAL/data/pf")
+	    endif
+	end
+	set p=($p)
+	setenv PFPATH `echo $p | sed 's/ /:/g' `
+    endif
+else
+    setenv PFPATH $ANTELOPE/data/pf:$ANTELOPE/local/data/pf:$CNSN_LOCAL/data/pf:./pf:.
+endif
+
+if ( $?DATAPATH ) then
+    if ( $DATAPATH !~ *$CNSN_LOCAL* ) then
+	set p=""
+	set m="$ANTELOPE/data"
+	foreach i ( `echo $DATAPATH | sed 's/:/ /g'` )
+	    if ( "$i" !~ "$m" ) then
+		set p=($p $i)
+	    else
+                set p=($p $m "$CNSN_LOCAL/data")
+	    endif
+	end
+	set p=($p)
+	setenv DATAPATH `echo $p | sed 's/ /:/g' `
+    endif
+else
+    setenv DATAPATH $ANTELOPE/data:$ANTELOPE/local/data:$CNSN_LOCAL/data
+endif
+
+if ( $?SCHEMA_DIR ) then
+    set a=$CNSN_LOCAL/data/schemas
+    foreach i ( `echo $SCHEMA_DIR | sed 's/:/ /g'` )
+        if ( "$i" !~ /opt/cnsn_local/* ) then
+            set a=($a $i)
+        endif
+    end
+    setenv SCHEMA_DIR `echo $a | sed 's/ /:/g' ` 
+else
+    setenv SCHEMA_DIR $CNSN_LOCAL/data/schemas:$ANTELOPE/data/schemas:$ANTELOPE/local/data/schemas
+endif
+
+unset a
+unset m
+unset p
+
+setenv CNSN_LOCALMAKE     $CNSN_LOCAL/include/cnsn_localmake
+
+set cnsn_local=$CNSN_LOCAL
+set antelopemake=$ANTELOPEMAKE

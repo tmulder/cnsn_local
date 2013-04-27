@@ -1,0 +1,92 @@
+unset CNSN_LOCAL
+
+. /opt/antelope/$id/setup.sh
+
+CNSN_LOCAL=/opt/cnsn_local/$id; export CNSN_LOCAL
+
+a="$CNSN_LOCAL/bin"
+
+# Set up the PATH and MANPATH environment variables.
+# If some version of the local trees is already in the path, remove it.
+for i in `echo $PATH | sed 's/:/ /g'`; do
+  case $i in
+    /opt/cnsn_local/*)        ;;
+    *)                 a="$a:$i" ;;
+  esac
+done
+PATH=$a ; export PATH
+unset a
+
+if [ "x$MANPATH" != x ] ; then
+  a=$CNSN_LOCAL/man
+  for i in `echo $MANPATH | sed 's/:/ /g'`; do
+    case $i in
+      /opt/cnsn_local/*)  ;;
+      *)                a="$a:$i"
+    esac
+  done
+  MANPATH=$a ; export MANPATH
+  unset a
+else
+  MANPATH="$CNSN_LOCAL/man:$ANTELOPE/man:$ANTELOPE/local/man:$ANTELOPE/../$tcltk/man:$ANTELOPE/../$perl/man" ; export MANPATH
+fi
+
+if [ "x$PFPATH" != x ] ; then
+  case $PFPATH in
+    *\$CNSN_LOCAL*)      ;;
+    *)            
+    p=""
+    m="$ANTELOPE/data/pf"
+    for i in `echo $PFPATH | sed 's/:/ /g'`; do
+      if [ "$i" != "$m" ]; then
+        p="$p:$i"
+      else
+        p="$p:$m:$CNSN_LOCAL/data/pf"
+      fi
+    done
+    PFPATH=$p; export PFPATH
+    ;;
+  esac
+else
+  PFPATH="$ANTELOPE/data/pf:$ANTELOPE/local/data/pf:$CNSN_LOCAL/data/pf:./pf:." ; export PFPATH
+fi
+
+if [ "x$DATAPATH" != x ] ; then
+  case $DATAPATH in
+    *\$CNSN_LOCAL*)      ;;
+    *)            
+    p=""
+    m="$ANTELOPE/data"
+    for i in `echo $DATAPATH | sed 's/:/ /g'`; do
+      if [ "$i" != "$m" ] ; then
+        p="$p:$i"
+      else
+        p="$p:$m:$CNSN_LOCAL/data"
+      fi
+    done
+    DATAPATH=$p; export DATAPATH
+    ;;
+  esac
+else
+  DATAPATH="$ANTELOPE/data:$ANTELOPE/local/data:$CNSN_LOCAL/data" ; export DATAPATH
+fi
+
+if [ "x$SCHEMA_DIR" != x ] ; then
+  a=$CNSN_LOCAL/data/schemas
+  for i in `echo $SCHEMA_DIR | sed 's/:/ /g'`; do
+    case $i in
+      /opt/cnsn_local/*)  ;;
+      *)                a="$a:$i"
+    esac
+  done
+  SCHEMA_DIR=$a ; export SCHEMA_DIR
+  unset a
+else
+  SCHEMA_DIR="$CNSN_LOCAL/data/schemas:$ANTELOPE/data/schemas:$ANTELOPE/local/data/schemas" ; export SCHEMA_DIR
+fi
+
+unset a
+unset m
+unset p
+
+CNSN_LOCALMAKE="$CNSN_LOCAL/include/cnsn_localmake" ; export CNSN_LOCALMAKE
