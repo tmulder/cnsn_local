@@ -1,0 +1,2 @@
+PARALLEL=-p
+include $(ANTELOPEMAKE)
